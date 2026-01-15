@@ -1,69 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gemini-Puter Hybrid Chat</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      // CRITICAL: Polyfills for Node.js-based libraries running in the browser.
-      // These must run before any other scripts.
-      
-      window.global = window;
-      window.process = window.process || { env: {} };
 
-      // Polyfill for timers to prevent "unref" errors common in Node modules on browser
-      // Some libraries expect setTimeout to return an object with unref()
-      if (typeof Number.prototype.unref === 'undefined') {
-        // @ts-ignore
-        Number.prototype.unref = function() { return this; };
-      }
-      if (typeof Number.prototype.ref === 'undefined') {
-        // @ts-ignore
-        Number.prototype.ref = function() { return this; };
-      }
-      
-      // Polyfill setImmediate (required by some socket libraries inside Puter)
-      if (typeof window.setImmediate === 'undefined') {
-        // @ts-ignore
-        window.setImmediate = function(cb) { return window.setTimeout(cb, 0); };
-        // @ts-ignore
-        window.clearImmediate = window.clearTimeout;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemini-Puter Hybrid Chat</title>
+  <!-- Tailwind configured in tailwind.config.js -->
+  <script>
+    // CRITICAL: Polyfills for Node.js-based libraries running in the browser.
+    // These must run before any other scripts.
 
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              charcoal: '#121212',
-              glass: 'rgba(255, 255, 255, 0.05)',
-              glassBorder: 'rgba(255, 255, 255, 0.1)',
-            },
-            animation: {
-              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            }
-          },
-        },
-      }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "jspdf": "https://esm.sh/jspdf@^4.0.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
-    "@heyputer/puter.js": "https://esm.sh/@heyputer/puter.js@^2.2.5",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
-  }
-}
-</script>
+    window.global = window;
+    window.process = window.process || { env: {} };
+
+    // Polyfill for timers to prevent "unref" errors common in Node modules on browser
+    // Some libraries expect setTimeout to return an object with unref()
+    if (typeof Number.prototype.unref === 'undefined') {
+      // @ts-ignore
+      Number.prototype.unref = function () { return this; };
+    }
+    if (typeof Number.prototype.ref === 'undefined') {
+      // @ts-ignore
+      Number.prototype.ref = function () { return this; };
+    }
+
+    // Polyfill setImmediate (required by some socket libraries inside Puter)
+    if (typeof window.setImmediate === 'undefined') {
+      // @ts-ignore
+      window.setImmediate = function (cb) { return window.setTimeout(cb, 0); };
+      // @ts-ignore
+      window.clearImmediate = window.clearTimeout;
+    }
+  </script>
+
 </head>
-  <body class="bg-gray-50 text-gray-900 dark:bg-charcoal dark:text-white antialiased overflow-hidden selection:bg-indigo-500 selection:text-white transition-colors duration-300">
-    <div id="root"></div>
-  </body>
+
+<body
+  class="bg-gray-50 text-gray-900 dark:bg-charcoal dark:text-white antialiased overflow-hidden selection:bg-indigo-500 selection:text-white transition-colors duration-300">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>
