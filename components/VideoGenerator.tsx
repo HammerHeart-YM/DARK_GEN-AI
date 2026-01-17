@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { generateVideoWithVeo } from '../services/gemini';
 import { Loader2, Download, Video, Film } from 'lucide-react';
 
-export const VideoGenerator: React.FC = () => {
+interface VideoGeneratorProps {
+  selectedModelId: string;
+}
+
+export const VideoGenerator: React.FC<VideoGeneratorProps> = ({ selectedModelId }) => {
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [resultVideo, setResultVideo] = useState<string | null>(null);
@@ -17,7 +21,7 @@ export const VideoGenerator: React.FC = () => {
     setResultVideo(null);
 
     try {
-      // NOTE: Video generation takes time.
+      // Pass the selected model variant if available
       const videoUri = await generateVideoWithVeo(prompt);
       setResultVideo(videoUri);
     } catch (err: any) {
@@ -34,7 +38,7 @@ export const VideoGenerator: React.FC = () => {
           <Film className="text-indigo-500 dark:text-indigo-400" />
           Video Studio
         </h2>
-        <p className="text-gray-500 dark:text-zinc-400">Generate 720p videos with Veo 3.1</p>
+        <p className="text-gray-500 dark:text-zinc-400">Cinematic Engine • {selectedModelId.split('-').slice(0, 2).join(' ').toUpperCase()}</p>
       </div>
 
       <div className="flex flex-col gap-8 items-center">
@@ -50,7 +54,7 @@ export const VideoGenerator: React.FC = () => {
                 className="w-full bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-white/10 rounded-xl p-3 text-gray-900 dark:text-white focus:outline-none focus:border-indigo-500/50 h-24 resize-none transition-colors"
               />
             </div>
-            
+
             <button
               type="submit"
               disabled={loading || !prompt}
@@ -65,17 +69,17 @@ export const VideoGenerator: React.FC = () => {
 
         {/* Result */}
         {resultVideo && (
-           <div className="w-full max-w-3xl mt-4 rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl bg-black">
-             <video controls className="w-full aspect-video" src={resultVideo} autoPlay loop />
-             <div className="p-4 bg-white dark:bg-zinc-900 flex justify-between items-center border-t border-gray-100 dark:border-white/5">
-               <span className="text-sm text-gray-500 dark:text-gray-400">Generated with Veo</span>
-               <a href={resultVideo} download className="flex items-center gap-2 text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-white transition-colors">
-                 <Download size={16} /> Download
-               </a>
-             </div>
-           </div>
+          <div className="w-full max-w-3xl mt-4 rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-2xl bg-black">
+            <video controls className="w-full aspect-video" src={resultVideo} autoPlay loop />
+            <div className="p-4 bg-white dark:bg-zinc-900 flex justify-between items-center border-t border-gray-100 dark:border-white/5">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Generated with Veo</span>
+              <a href={resultVideo} download className="flex items-center gap-2 text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-white transition-colors">
+                <Download size={16} /> Download
+              </a>
+            </div>
+          </div>
         )}
-        
+
         {loading && (
           <div className="text-center py-12">
             <Loader2 size={40} className="animate-spin text-indigo-500 mx-auto mb-4" />

@@ -15,17 +15,34 @@ import jsPDF from 'jspdf';
 import { AlertTriangle, X } from 'lucide-react';
 
 // Define available models
-const AVAILABLE_MODELS: Model[] = [
+const CHAT_MODELS: Model[] = [
   { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash (Native)', provider: 'gemini' },
+  { id: 'gemini-2.0-flash-exp', name: 'Gemini 2.0 Flash (Native)', provider: 'gemini' },
+  { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro (Native)', provider: 'gemini' },
   { id: 'openai/gpt-oss-120b:free', name: 'GPT OSS 120B (Free)', provider: 'openrouter', isFree: true },
   { id: 'deepseek/deepseek-v3:free', name: 'DeepSeek V3 (Free)', provider: 'openrouter', isFree: true },
   { id: 'meta-llama/llama-4-maverick:free', name: 'Llama 4 Maverick (Free)', provider: 'openrouter', isFree: true },
+  { id: 'deepseek/deepseek-r1:free', name: 'DeepSeek R1 (Free)', provider: 'openrouter', isFree: true },
   { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp (Free)', provider: 'openrouter', isFree: true },
   { id: 'google/gemma-2-9b-it', name: 'Gemma 2 (Neural Core)', provider: 'huggingface' },
   { id: 'mistralai/Mistral-Small-Instruct-24B', name: 'Mistral (High Speed)', provider: 'huggingface' },
   { id: 'meta-llama/Llama-3.3-70B-Instruct', name: 'Llama 3.3 (Deep Reasoning)', provider: 'huggingface' },
   { id: 'Qwen/Qwen2.5-72B-Instruct', name: 'Qwen 2.5 (Technical Pro)', provider: 'huggingface' },
   { id: 'puter-chat', name: 'Puter.js (Llama/GPT Fallback)', provider: 'puter' }
+];
+
+const IMAGE_MODELS: Model[] = [
+  { id: 'gemini-2.5-flash-image', name: 'Gemini 2.5 Flash Image', provider: 'gemini' },
+  { id: 'black-forest-labs/FLUX.1-schnell', name: 'Flux.1 Schnell (Quality)', provider: 'huggingface' },
+  { id: 'stabilityai/stable-diffusion-xl-base-1.0', name: 'SDXL 1.0 (Classic)', provider: 'huggingface' },
+  { id: 'runwayml/stable-diffusion-v1-5', name: 'SD 1.5 (Fast)', provider: 'huggingface' },
+  { id: 'pollinations/flux', name: 'Flux Pro (Pollinations)', provider: 'huggingface' }, // Using HF as a proxy category for now or I can add POLLINATIONS
+  { id: 'pollinations/turbo', name: 'Turbo Speed (Pollinations)', provider: 'huggingface' }
+];
+
+const VIDEO_MODELS: Model[] = [
+  { id: 'veo-3.1-fast-generate-preview', name: 'Veo 3.1 Fast (Preview)', provider: 'gemini' },
+  { id: 'veo-3.1-high-quality', name: 'Veo 3.1 HQ (Cine)', provider: 'gemini' }
 ];
 
 const MissingKeyToast: React.FC<{ onClose: () => void }> = ({ onClose }) => (
@@ -55,7 +72,9 @@ const MissingKeyToast: React.FC<{ onClose: () => void }> = ({ onClose }) => (
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AppTab>('chat');
-  const [currentModelId, setCurrentModelId] = useState<string>('puter-chat');
+  const [currentModelId, setCurrentModelId] = useState<string>(CHAT_MODELS[0].id);
+  const [currentImageModelId, setCurrentImageModelId] = useState<string>(IMAGE_MODELS[0].id);
+  const [currentVideoModelId, setCurrentVideoModelId] = useState<string>(VIDEO_MODELS[0].id);
   const [messages, setMessages] = useState<Message[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -174,7 +193,7 @@ const App: React.FC = () => {
         scrollToBottom();
       };
 
-      const selectedModel = AVAILABLE_MODELS.find(m => m.id === currentModelId);
+      const selectedModel = CHAT_MODELS.find(m => m.id === currentModelId);
       const provider = selectedModel?.provider || 'puter';
 
       if (provider === 'gemini') {
@@ -333,6 +352,7 @@ const App: React.FC = () => {
   };
 
   const downloadCurrentChat = () => {
+    // Simple PDF download
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text("Chat Export", 10, 10);
@@ -347,10 +367,14 @@ const App: React.FC = () => {
     doc.save(`chat-${currentSessionId}.pdf`);
   };
 
-  const selectedModelName = AVAILABLE_MODELS.find(m => m.id === currentModelId)?.name || 'AI Assistant';
+  // Contextual Model Helpers
+  const currentTabModels = activeTab === 'chat' ? CHAT_MODELS : activeTab === 'image' ? IMAGE_MODELS : VIDEO_MODELS;
+  const currentTabModelId = activeTab === 'chat' ? currentModelId : activeTab === 'image' ? currentImageModelId : currentVideoModelId;
+  const setTabModelId = activeTab === 'chat' ? setCurrentModelId : activeTab === 'image' ? setCurrentImageModelId : setCurrentVideoModelId;
+  const currentTabSelectedModelName = currentTabModels.find(m => m.id === currentTabModelId)?.name || 'Neural Link';
 
   return (
-    <div className={`flex h-screen w-full ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'} overflow-hidden relative font-sans transition-colors duration-300`}>
+    <div className={`flex h-screen w-full transition-colors duration-300 font-outfit ${darkMode ? 'dark bg-black' : 'bg-gray-50'}`}>
       {/* Toast Notification */}
       {showMissingKeyToast && <MissingKeyToast onClose={() => setShowMissingKeyToast(false)} />}
 
@@ -377,9 +401,9 @@ const App: React.FC = () => {
           onRenameSession={renameSession}
           onDeleteSession={deleteSession}
           onPinSession={pinSession}
-          currentModelId={currentModelId}
-          onSetModelId={setCurrentModelId}
-          availableModels={AVAILABLE_MODELS}
+          currentModelId={currentTabModelId}
+          onSetModelId={setTabModelId}
+          availableModels={currentTabModels}
           onCloseMobile={() => setSidebarOpen(false)}
         />
       </div>
@@ -389,10 +413,10 @@ const App: React.FC = () => {
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          provider={AVAILABLE_MODELS.find(m => m.id === currentModelId)?.provider || 'puter'}
-          modelName={selectedModelName}
+          provider={currentTabModels.find(m => m.id === currentTabModelId)?.provider || 'puter'}
+          modelName={currentTabSelectedModelName}
           onClearChat={clearCurrentChat}
-          onDownloadChat={() => { }} // Deprecated in favor of internal menu, or updated to open modal
+          onDownloadChat={() => { }}
           onLiveMode={() => setIsLiveModeOpen(true)}
           currentSession={sessions.find(s => s.id === currentSessionId)}
           darkMode={darkMode}
@@ -422,10 +446,19 @@ const App: React.FC = () => {
             </>
           )}
 
-          {activeTab === 'image' && <ImageGenerator />}
-          {activeTab === 'video' && <VideoGenerator />}
+          {activeTab === 'image' && (
+            <div className="flex-1 overflow-y-auto">
+              <ImageGenerator selectedModelId={currentImageModelId} />
+            </div>
+          )}
+          {activeTab === 'video' && (
+            <div className="flex-1 overflow-y-auto">
+              <VideoGenerator selectedModelId={currentVideoModelId} />
+            </div>
+          )}
         </div>
       </div>
+
       <LiveMasteryModal
         isOpen={isLiveModeOpen}
         onClose={() => setIsLiveModeOpen(false)}

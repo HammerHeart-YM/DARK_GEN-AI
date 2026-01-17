@@ -25,5 +25,15 @@ export default defineConfig(({ mode }) => {
       // Force vite to pre-bundle these dependencies to prevent commonjs/esm issues
       include: ['@heyputer/puter.js', 'jspdf', 'lucide-react', '@google/genai'],
     },
+    server: {
+      proxy: {
+        '/hf-api': {
+          target: 'https://router.huggingface.co/hf-inference',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/hf-api/, '/models'),
+          secure: false,
+        }
+      }
+    }
   };
 });

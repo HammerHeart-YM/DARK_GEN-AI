@@ -30,7 +30,11 @@ export const sendMessageToPuter = async (
       ? response
       : response?.message?.content || response?.text || '';
 
-    onStream(content);
+    if (!content) {
+      onStream("I heard you, but my response was lost in the void. Try again.");
+    } else {
+      onStream(content);
+    }
   } catch (error) {
     console.error("Puter.js error:", error);
     throw error;
