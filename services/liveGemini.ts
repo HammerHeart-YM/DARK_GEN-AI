@@ -17,7 +17,14 @@ export class GeminiLiveClient extends EventEmitter {
       this.disconnect();
     }
 
-    const wsUrl = `${this.url}?key=${apiKey}`;
+    const finalApiKey = apiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!finalApiKey) {
+      console.error("Gemini Live: No API Key provided");
+      this.emit('error', new Error("No API Key provided"));
+      return;
+    }
+
+    const wsUrl = `${this.url}?key=${finalApiKey}`;
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {

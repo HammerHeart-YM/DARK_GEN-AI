@@ -82,6 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (model.provider === 'gemini') group = 'NATIVE GEMINI';
     else if (model.provider === 'huggingface') group = 'NEURAL CORE';
     else if (model.provider === 'openrouter') group = 'OPENROUTER';
+    else if (model.provider === 'groq') group = 'GROQ SPEED';
 
     if (!acc[group]) acc[group] = [];
     acc[group].push(model);

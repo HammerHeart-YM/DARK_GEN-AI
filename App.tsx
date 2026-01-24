@@ -11,6 +11,7 @@ import { sendMessageToGemini } from './services/gemini';
 import { sendMessageToPuter } from './services/puter';
 import { sendMessageToOpenRouter } from './services/openrouter';
 import { sendMessageToHuggingFace } from './services/huggingface';
+import { sendMessageToGroq } from './services/groq';
 import jsPDF from 'jspdf';
 import { AlertTriangle, X } from 'lucide-react';
 
@@ -24,10 +25,13 @@ const CHAT_MODELS: Model[] = [
   { id: 'meta-llama/llama-4-maverick:free', name: 'Llama 4 Maverick (Free)', provider: 'openrouter', isFree: true },
   { id: 'deepseek/deepseek-r1:free', name: 'DeepSeek R1 (Free)', provider: 'openrouter', isFree: true },
   { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp (Free)', provider: 'openrouter', isFree: true },
-  { id: 'google/gemma-2-9b-it', name: 'Gemma 2 (Neural Core)', provider: 'huggingface' },
-  { id: 'mistralai/Mistral-Small-Instruct-24B', name: 'Mistral (High Speed)', provider: 'huggingface' },
-  { id: 'meta-llama/Llama-3.3-70B-Instruct', name: 'Llama 3.3 (Deep Reasoning)', provider: 'huggingface' },
-  { id: 'Qwen/Qwen2.5-72B-Instruct', name: 'Qwen 2.5 (Technical Pro)', provider: 'huggingface' },
+  { id: 'mistralai/Mistral-7B-Instruct-v0.2', name: 'Mistral 7B (Instruct v0.2)', provider: 'huggingface' },
+  { id: 'HuggingFaceH4/zephyr-7b-beta', name: 'Zephyr 7B Beta', provider: 'huggingface' },
+  { id: 'Qwen/Qwen2.5-7B-Instruct', name: 'Qwen 2.5 7B', provider: 'huggingface' },
+  { id: 'google/gemma-2-2b-it', name: 'Gemma 2 2B', provider: 'huggingface' },
+  { id: 'TinyLlama/TinyLlama-1.1B-Chat', name: 'TinyLlama 1.1B', provider: 'huggingface' },
+  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 (Groq Hyper-Speed)', provider: 'groq' },
+  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B (Groq Instant)', provider: 'groq' },
   { id: 'puter-chat', name: 'Puter.js (Llama/GPT Fallback)', provider: 'puter' }
 ];
 
@@ -209,6 +213,8 @@ const App: React.FC = () => {
             setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, content: `_${status}_` } : m));
           }
         );
+      } else if (provider === 'groq') {
+        await sendMessageToGroq({ text, file, modelId: currentModelId, signal: abortControllerRef.current.signal }, onStream);
       } else {
         await sendMessageToPuter({ text, file }, onStream);
       }
@@ -374,7 +380,7 @@ const App: React.FC = () => {
   const currentTabSelectedModelName = currentTabModels.find(m => m.id === currentTabModelId)?.name || 'Neural Link';
 
   return (
-    <div className={`flex h-screen w-full transition-colors duration-300 font-outfit ${darkMode ? 'dark bg-black' : 'bg-gray-50'}`}>
+    <div className={`flex h-screen w-full transition-colors duration-300 font-outfit ${darkMode ? 'dark bg-black' : 'bg-gray-50'} overflow-hidden`}>
       {/* Toast Notification */}
       {showMissingKeyToast && <MissingKeyToast onClose={() => setShowMissingKeyToast(false)} />}
 
