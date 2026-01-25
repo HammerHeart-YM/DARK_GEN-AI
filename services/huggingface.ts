@@ -6,7 +6,7 @@ export const sendMessageToHuggingFace = async (
     onStream: (chunk: string) => void,
     onStatusUpdate?: (status: string) => void
 ) => {
-    const apiKey = import.meta.env.VITE_HF_TOKEN || (typeof process !== 'undefined' ? process.env.VITE_HF_TOKEN : undefined);
+    const apiKey = import.meta.env.VITE_HF_TOKEN;
 
     if (!apiKey) {
         throw new Error("Missing Hugging Face API Token (VITE_HF_TOKEN). Please check your .env configuration.");

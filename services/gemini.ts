@@ -21,10 +21,8 @@ const fileToPart = (file: File): Promise<{ inlineData: { data: string; mimeType:
 };
 
 const getApiKey = () => {
-  // Robust check for API key: try import.meta.env first, then process.env
-  // Uses optional chaining (?.) to prevent crashes if objects are undefined
-  const key = import.meta.env?.VITE_GEMINI_API_KEY || 
-              (typeof process !== 'undefined' ? process.env?.VITE_GEMINI_API_KEY : undefined);
+  // Robust check for API key: try import.meta.env
+  const key = import.meta.env.VITE_GEMINI_API_KEY;
 
   // Basic validation to ensure placeholder keys aren't used
   if (!key || key.includes("PLACE_YOUR_KEY") || key.includes("ENTER_YOUR_KEY")) {

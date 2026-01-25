@@ -85,7 +85,7 @@ const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [showMissingKeyToast, setShowMissingKeyToast] = useState(false);
   const [isLiveModeOpen, setIsLiveModeOpen] = useState(false);
-  const [userApiKey] = useState(localStorage.getItem('gemini_api_key') || import.meta.env?.VITE_GEMINI_API_KEY || '');
+  const [userApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || '');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -93,11 +93,8 @@ const App: React.FC = () => {
   // Initialize and check API Key
   useEffect(() => {
     // Access keys safely via optional chaining on import.meta.env
-    const geminiKey = import.meta.env?.VITE_GEMINI_API_KEY ||
-      (typeof process !== 'undefined' ? process.env?.VITE_GEMINI_API_KEY : undefined);
-
-    const openRouterKey = import.meta.env?.VITE_OPENROUTER_KEY ||
-      (typeof process !== 'undefined' ? process.env?.VITE_OPENROUTER_KEY : undefined);
+    const geminiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const openRouterKey = import.meta.env.VITE_OPENROUTER_KEY;
 
     // Check if keys are placeholders or missing
     const isGeminiMissing = !geminiKey || geminiKey.includes("PLACE_YOUR_KEY") || geminiKey.includes("ENTER_YOUR_KEY");

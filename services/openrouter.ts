@@ -12,8 +12,7 @@ export const sendMessageToOpenRouter = async (
   onStream: (chunk: string) => void,
   onStatusUpdate?: (status: string) => void
 ) => {
-  const apiKey = import.meta.env?.VITE_OPENROUTER_KEY ||
-    (typeof process !== 'undefined' ? process.env?.VITE_OPENROUTER_KEY : undefined);
+  const apiKey = import.meta.env.VITE_OPENROUTER_KEY;
 
   if (!apiKey || apiKey.includes("PLACE_YOUR_KEY")) {
     throw new Error("OpenRouter API Key is missing. Please set VITE_OPENROUTER_KEY in your .env file.");

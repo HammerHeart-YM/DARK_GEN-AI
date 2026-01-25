@@ -2,7 +2,7 @@
 import { HfInference } from "@huggingface/inference";
 import { generateImageWithGemini } from "./gemini";
 
-const getHFToken = () => import.meta.env?.VITE_HF_TOKEN || (typeof process !== 'undefined' ? process.env?.VITE_HF_TOKEN : '');
+const getHFToken = () => import.meta.env.VITE_HF_TOKEN;
 
 export const generateImage = async (prompt: string, modelId: string, aspectRatio: string = "1:1"): Promise<string> => {
     // 1. Native Gemini
